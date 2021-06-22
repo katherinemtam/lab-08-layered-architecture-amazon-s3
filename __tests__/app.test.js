@@ -52,7 +52,7 @@ describe('demo routes', () => {
     expect(res.body).toEqual([profile1, profile2]);
   });
 
-  test('update a profiles by id via PUT', async () => {
+  test('update a profile by id via PUT', async () => {
     const profile = await Profile.insert({
       email: 'abc@abc.abc',
       accountId: 'abc123'
@@ -62,6 +62,19 @@ describe('demo routes', () => {
 
     const res = await request(app)
       .put(`/api/v1/profiles/${profile.id}`)
+      .send(profile);
+
+    expect(res.body).toEqual(profile);
+  });
+
+  test('delete a profile by id via DELETE', async () => {
+    const profile = await Profile.insert({
+      email: 'abc@abc.abc',
+      accountId: 'abc123'
+    });
+
+    const res = await request(app)
+      .delete(`/api/v1/profiles/${profile.id}`)
       .send(profile);
 
     expect(res.body).toEqual(profile);
