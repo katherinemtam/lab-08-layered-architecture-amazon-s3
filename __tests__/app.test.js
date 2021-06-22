@@ -35,7 +35,7 @@ describe('demo routes', () => {
     expect(res.body).toEqual(profile);
   });
 
-  test('gets all profiles by id via GET', async () => {
+  test('gets all profiles via GET', async () => {
     const profile1 = await Profile.insert({
       email: 'abc@abc.abc',
       accountId: 'abc123'
@@ -50,5 +50,20 @@ describe('demo routes', () => {
       .get('/api/v1/profiles/');
 
     expect(res.body).toEqual([profile1, profile2]);
+  });
+
+  test('update a profiles by id via PUT', async () => {
+    const profile = await Profile.insert({
+      email: 'abc@abc.abc',
+      accountId: 'abc123'
+    });
+
+    profile.email = '123@123.123';
+
+    const res = await request(app)
+      .put(`/api/v1/profiles/${profile.id}`)
+      .send(profile);
+
+    expect(res.body).toEqual(profile);
   });
 });
