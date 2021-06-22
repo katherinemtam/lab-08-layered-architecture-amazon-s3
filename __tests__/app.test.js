@@ -30,9 +30,25 @@ describe('demo routes', () => {
     });
 
     const res = await request(app)
-      .get(`/api/v1/profiles/${profile.id}`)
-      .send(profile);
+      .get(`/api/v1/profiles/${profile.id}`);
 
     expect(res.body).toEqual(profile);
+  });
+
+  test('gets all profiles by id via GET', async () => {
+    const profile1 = await Profile.insert({
+      email: 'abc@abc.abc',
+      accountId: 'abc123'
+    });
+
+    const profile2 = await Profile.insert({
+      email: '123@123.123',
+      accountId: '123abc'
+    });
+
+    const res = await request(app)
+      .get('/api/v1/profiles/');
+
+    expect(res.body).toEqual([profile1, profile2]);
   });
 });
